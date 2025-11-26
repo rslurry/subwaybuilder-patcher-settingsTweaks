@@ -10,12 +10,12 @@
 ## Installation
 First, download and install Kronifer's patcher: https://github.com/Kronifer/subwaybuilder-patcher
 
-Once that is set up, navigate to the `packages` folder.  Assuming you are currently in the `subwaybuilder-patcher` folder, then do 
+Once that is set up, navigate to the `packages` folder.  Assuming that you are currently in the `subwaybuilder-patcher` folder, then do 
 ```
 cd patcher/packages
 ```
 
-In the packages directory, clone this repository into a folder named `settingsTweaks`:
+While here in the packages directory, clone this repository into a folder named `settingsTweaks`:
 ```
 git clone https://github.com/rslurry/subwaybuilder-patcher-settingsTweaks ./settingsTweaks
 ```
@@ -44,8 +44,7 @@ export default config;
 
 ## Usage
 To use `settingsTweaks`, in your patcher `config.js` (located in the `subwaybuilder-patcher` folder, NOT `settingsTweaks`), ensure you have `"settingsTweaks"` included in the `"packagesToRun"`.  For example, if you wanted to use this in addition to the `mapPatcher`, your patcher `config.js` might look something like this:
-```
-js
+```js
 const config = {
   "subwaybuilderLocation": "C:\\Users\\[username]\\AppData\\Local\\Programs\\Subway\ Builder\\", // appimage location image on linux or install directory on windows (something like C:\\Users\\[username]\\AppData\\Local\\Programs\\Subway\ Builder)
   "platform": "windows", // either 'linux' or 'windows'
@@ -58,3 +57,4 @@ export default config;
 The ordering of `settingsTweaks` in `"packagesToRun"` should not matter, as long as the other packages are not also changing the settings controlled here.
 
 Enjoy.
+
