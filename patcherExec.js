@@ -9,9 +9,15 @@ const stringReplaceAt = (string, startIndex, endIndex, replacement) => {
 export function patcherExec(fileContents) {
     console.log("Running settingsTweaks - contributed by slurry");
     if (config.changeGameSpeeds) {
-        console.log("Changing game simulation speeds");
+        console.log(`Changing game simulation speeds to ${config.gameSpeeds}`);
         
         ["INDEX", "INTERLINEDROUTES", "POPCOMMUTEWORKER"].forEach(key => {
+          if (fileContents[key] == undefined) {
+            throw new Error(`'${key}' is undefined.` + 
+                            "\nThe likely problem is that your patcher is out of date.\n" +
+                            "Run 'git pull origin main', then try running the patcher again.\n" +
+                            "If you still see this error after updating the patcher to the latest version,\nraise an issue on GitHub or contact @slurry on Discord.")
+          }
           fileContents[key] = fileContents[key]
             .replace(/"slow":[\s]*[0-9]+/, `"slow": ${config.gameSpeeds[0]}`)
             .replace(/"normal":[\s]*[0-9]+/, `"normal": ${config.gameSpeeds[1]}`)
@@ -21,7 +27,7 @@ export function patcherExec(fileContents) {
     }
     
     if (config.changeMinTurnRadius) {
-        console.log("Changing minimum allowed turn radius");
+        console.log(`Changing minimum allowed turn radius to ${config.minTurnRadius} m`);
         
         ["INDEX", "INTERLINEDROUTES", "POPCOMMUTEWORKER"].forEach(key => {
           fileContents[key] = fileContents[key].replace(
@@ -33,7 +39,7 @@ export function patcherExec(fileContents) {
 
     
     if (config.changeMaxSlope) {
-        console.log("Changing maximum slope percentage");
+        console.log(`Changing maximum slope percentage to ${config.maxSlope}`);
         
         ["INDEX", "INTERLINEDROUTES", "POPCOMMUTEWORKER"].forEach(key => {
           fileContents[key] = fileContents[key].replace(
@@ -55,9 +61,9 @@ export function patcherExec(fileContents) {
     }
     
     if (config.changeStartingMoney) {
-        console.log("Changing starting money amount");
+        console.log(`Changing starting money amount to ${config.startingMoney} billion`);
         
-        ["INDEX", "INTERLINEDROUTES"].forEach(key => {
+        ["INDEX", "INTERLINEDROUTES", "POPCOMMUTEWORKER"].forEach(key => {
           fileContents[key] = fileContents[key].replace(
             /("STARTING_MONEY":)[\s]*[^,]*/,
             `$1 ${config.startingMoney}e9`
