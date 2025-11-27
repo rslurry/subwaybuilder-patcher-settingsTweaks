@@ -48,16 +48,18 @@ export function patcherExec(fileContents) {
           );
         });
         
-        ["INDEX", "INTERLINEDROUTES", "POPCOMMUTEWORKER"].forEach(key => {
-          let occurrence = 0;
-          fileContents[key] = fileContents[key].replace(/("maxSlopePercentage":)[\s]*[^,]*/g, (match, group1) => {
-            occurrence++;
-            if (occurrence === 2) {
-              return `${group1} ${config.maxSlope}`; // replace only the 2nd occurrence
-            }
-            return match; // leave others unchanged
-          });
-        });
+        if (config.maxSlope > 4) {
+            ["INDEX", "INTERLINEDROUTES", "POPCOMMUTEWORKER"].forEach(key => {
+              let occurrence = 0;
+              fileContents[key] = fileContents[key].replace(/("maxSlopePercentage":)[\s]*[^,]*/g, (match, group1) => {
+                occurrence++;
+                if (occurrence === 2) {
+                  return `${group1} ${config.maxSlope}`; // replace only the 2nd occurrence
+                }
+                return match; // leave others unchanged
+              });
+            });
+        }
     }
     
     if (config.changeStartingMoney) {
