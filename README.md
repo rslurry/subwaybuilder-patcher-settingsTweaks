@@ -6,6 +6,7 @@
 - Change the minimum allowed turn radius
 - Change the maximum allowed slope percentage
 - Change the starting money amount
+- Change the length of crossovers created via the construction menu's button
 
 ## Installation
 First, download and install Kronifer's patcher: https://github.com/Kronifer/subwaybuilder-patcher
@@ -37,6 +38,9 @@ const config = {
     
     "changeStartingMoney" : true, // true or false. Determines whether to change the starting money for new games
     "startingMoney" : 10, // Starting money in billions - game default is 3 billion
+    
+    "changeScissorLength" : true, // true or false.  Determines whether to change the length of the crossovers created via the construction menu's button
+    "scissorLength" : 80, // Length of the crossover in meters - game default is 40
 };
 
 export default config;

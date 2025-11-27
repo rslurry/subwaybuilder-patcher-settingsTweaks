@@ -72,6 +72,18 @@ export function patcherExec(fileContents) {
           );
         });
     }
+    
+    if (config.changeScissorLength) {
+        console.log(`Changing scissor length to ${config.scissorLength} m`);
+        
+        ["INDEX", "INTERLINEDROUTES", "POPCOMMUTEWORKER"].forEach(key => {
+          fileContents[key] = fileContents[key].replace(
+            /("SCISSORS_CROSSOVER_LENGTH":)[\s]*[^,]*/,
+            `$1 ${config.scissorLength}`
+          );
+
+        });
+    }
 
     return fileContents;
 }

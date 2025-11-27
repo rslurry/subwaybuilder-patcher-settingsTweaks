@@ -10,6 +10,9 @@ const config = {
     
     "changeStartingMoney" : false, // true or false. Determines whether to change the starting money for new games
     "startingMoney" : 3, // Starting money in billions - game default is 3 billion
+    
+    "changeScissorLength" : false, // true or false.  Determines whether to change the length of the crossovers created via the construction menu's button
+    "scissorLength" : 40, // Length of the crossover in meters - game default is 40
   };
   
   export default config;
