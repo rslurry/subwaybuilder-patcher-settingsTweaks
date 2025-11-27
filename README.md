@@ -7,6 +7,7 @@
 - Change the maximum allowed slope percentage
 - Change the starting money amount
 - Change the length of crossovers created via the construction menu's button
+- Change bond parameters
 
 ## Installation
 First, download and install Kronifer's patcher: https://github.com/Kronifer/subwaybuilder-patcher
@@ -41,6 +42,25 @@ const config = {
     
     "changeScissorLength" : true, // true or false.  Determines whether to change the length of the crossovers created via the construction menu's button
     "scissorLength" : 80, // Length of the crossover in meters - game default is 40
+    
+    "changeBonds" : true, // true or false.  Determines whether to change the bond parameters
+    "bondParameters" : {
+        "SMALL" : { // Parameters for the smallest bond
+            "principal" : 1e9,            // Bond amount - game default is 1e8
+            "interestRate" : 0.09,        // Interest rate - game default is 0.1
+            "requiredDailyRevenue" : 1e6, // Required daily revenue to take the bond - game default is 1e7
+        },
+        "MEDIUM" : { // Parameters for the medium-sized bond
+            "principal" : 5e9,            // Game default is 5e8
+            "interestRate" : 0.05,        // Game default is 0.08
+            "requiredDailyRevenue" : 1e7, // Game default is 1e8
+        },
+        "LARGE" : { // Parameters for the largest bond
+            "principal" : 1e10,           // Game default is 1e9
+            "interestRate" : 0.02,        // Game default is 0.06
+            "requiredDailyRevenue" : 5e7, // Game default is 2e8
+        },
+    },
 };
 
 export default config;

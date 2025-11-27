@@ -81,8 +81,20 @@ export function patcherExec(fileContents) {
             /("SCISSORS_CROSSOVER_LENGTH":)[\s]*[^,]*/,
             `$1 ${config.scissorLength}`
           );
-
         });
+    }
+    
+    if (config.changeBonds) {
+        console.log(`Changing bond parameters`);
+        
+        for (const [bondType, props] of Object.entries(config.bondParameters)) {
+          for (const [prop, newValue] of Object.entries(props)) {
+            const regex = new RegExp(`("${bondType}":\\s*{[^}]*"${prop}":)\\s*[\\de.+-]+`);
+            fileContents["INDEX"] = fileContents["INDEX"].replace(regex, `$1 ${newValue.toExponential(0).replace('e+', 'e')}`);
+          }
+          const regex = new RegExp(`("${bondType}":\\s*{[^}]*"principalPaymentRate":)\\s*[\\de.+-]+`);
+          fileContents["INDEX"] = fileContents["INDEX"].replace(regex, `$1 ${(config.bondParameters[bondType]["interestRate"] / 100).toExponential()}`);
+        }
     }
 
     return fileContents;
