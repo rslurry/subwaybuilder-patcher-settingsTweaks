@@ -8,16 +8,21 @@ const stringReplaceAt = (string, startIndex, endIndex, replacement) => {
 
 export function patcherExec(fileContents) {
     console.log("Running settingsTweaks - contributed by slurry");
+    
+    ["INDEX", "INTERLINEDROUTES", "POPCOMMUTEWORKER"].forEach(key => {
+      if (fileContents[key] == undefined) {
+        throw new Error(`'${key}' is undefined.` + 
+                        "\nThe likely problem is that your patcher is out of date.\n" +
+                        "Run 'git pull origin main', then try running the patcher again.\n" +
+                        "If you still see this error after updating the patcher to the latest version,\n" +
+                        "raise an issue on GitHub or contact @slurry on Discord.")
+      }
+    });
+    
     if (config.changeGameSpeeds) {
         console.log(`Changing game simulation speeds to ${config.gameSpeeds}`);
         
         ["INDEX", "INTERLINEDROUTES", "POPCOMMUTEWORKER"].forEach(key => {
-          if (fileContents[key] == undefined) {
-            throw new Error(`'${key}' is undefined.` + 
-                            "\nThe likely problem is that your patcher is out of date.\n" +
-                            "Run 'git pull origin main', then try running the patcher again.\n" +
-                            "If you still see this error after updating the patcher to the latest version,\nraise an issue on GitHub or contact @slurry on Discord.")
-          }
           fileContents[key] = fileContents[key]
             .replace(/"slow":[\s]*[0-9]+/, `"slow": ${config.gameSpeeds[0]}`)
             .replace(/"normal":[\s]*[0-9]+/, `"normal": ${config.gameSpeeds[1]}`)
@@ -43,7 +48,7 @@ export function patcherExec(fileContents) {
         
         ["INDEX", "INTERLINEDROUTES", "POPCOMMUTEWORKER"].forEach(key => {
           fileContents[key] = fileContents[key].replace(
-            /("MAX_SLOPE_PERCENTAGE":)[\s]*[^,]*/,
+            /("MAX_SLOPE_PERCENTAGE":)[\s]*[\d.]+/,
             `$1 ${config.maxSlope}`
           );
         });
@@ -66,10 +71,19 @@ export function patcherExec(fileContents) {
         console.log(`Changing starting money amount to ${config.startingMoney} billion`);
         
         ["INDEX", "INTERLINEDROUTES", "POPCOMMUTEWORKER"].forEach(key => {
-          fileContents[key] = fileContents[key].replace(
-            /("STARTING_MONEY":)[\s]*[^,]*/,
-            `$1 ${config.startingMoney}e9`
-          );
+          if (config.startingMoney) {
+              fileContents[key] = fileContents[key].replace(
+                /("STARTING_MONEY":)[\s]*[\d.]+/,
+                `$1 ${config.startingMoney}`
+              );
+          }
+          
+          if (config.startingTrainCars) {
+              fileContents[key] = fileContents[key].replace(
+                    /("STARTING_TRAIN_CARS":)[\s]*[\d.]+/,
+                    `$1 ${config.startingTrainCars}`
+              );
+          }
         });
     }
     
@@ -78,7 +92,7 @@ export function patcherExec(fileContents) {
         
         ["INDEX", "INTERLINEDROUTES", "POPCOMMUTEWORKER"].forEach(key => {
           fileContents[key] = fileContents[key].replace(
-            /("SCISSORS_CROSSOVER_LENGTH":)[\s]*[^,]*/,
+            /("SCISSORS_CROSSOVER_LENGTH":)[\s]*[\d.]+/,
             `$1 ${config.scissorLength}`
           );
         });
@@ -95,6 +109,69 @@ export function patcherExec(fileContents) {
           const regex = new RegExp(`("${bondType}":\\s*{[^}]*"principalPaymentRate":)\\s*[\\de.+-]+`);
           fileContents["INDEX"] = fileContents["INDEX"].replace(regex, `$1 ${(config.bondParameters[bondType]["interestRate"] / 100).toExponential()}`);
         }
+    }
+    
+    if (config.changeConstructionCosts) {
+        console.log(`Changing construction cost multipliers`);
+        
+        ["INDEX", "INTERLINEDROUTES", "POPCOMMUTEWORKER"].forEach(key => {
+            if (config.single_multiplier) {
+                if (key == "INDEX") {
+                    console.log(`Changing single cost multiplier to ${config.single_multiplier}x`);
+                }
+                fileContents[key] = fileContents[key].replace(
+                  /("SINGLE_MULTIPLIER":)[\s]*[\d.]+/g,
+                  `$1 ${config.single_multiplier}`
+                );
+            }
+          
+            if (config.quad_multiplier) {
+                if (key == "INDEX") {
+                    console.log(`Changing quad cost multiplier to ${config.quad_multiplier}x`);
+                }
+                fileContents[key] = fileContents[key].replace(
+                  /("QUAD_MULTIPLIER":)[\s]*[\d.]+/g,
+                  `$1 ${config.quad_multiplier}`
+                );
+            }
+          
+            if (config.elevation_multipliers) {
+                if (key == "INDEX") {
+                    console.log(`Changing elevation cost multipliers to ${config.elevation_multipliers}x`);
+                }
+                fileContents[key] = fileContents[key]
+                  .replace(/("ELEVATION_MULTIPLIERS":\s*\{[^}]*"DEEP_BORE":\s*)[\d.]+/, `$1${config.elevation_multipliers[0]}`)
+                  .replace(/("ELEVATION_MULTIPLIERS":\s*\{[^}]*"STANDARD_TUNNEL":\s*)[\d.]+/, `$1${config.elevation_multipliers[1]}`)
+                  .replace(/("ELEVATION_MULTIPLIERS":\s*\{[^}]*"CUT_AND_COVER":\s*)[\d.]+/, `$1${config.elevation_multipliers[2]}`)
+                  .replace(/("ELEVATION_MULTIPLIERS":\s*\{[^}]*"AT_GRADE":\s*)[\d.]+/, `$1${config.elevation_multipliers[3]}`)
+                  .replace(/("ELEVATION_MULTIPLIERS":\s*\{[^}]*"ELEVATED":\s*)[\d.]+/, `$1${config.elevation_multipliers[4]}`);
+            }
+            
+            if (config.water_multipliers) {
+                if (key == "INDEX") {
+                    console.log(`Changing water cost multipliers to ${config.water_multipliers}x`);
+                }
+                fileContents[key] = fileContents[key]
+                  .replace(/("WATER_MULTIPLIERS":\s*\{[^}]*"DEEP_BORE":\s*)[\d.]+/, `$1${config.water_multipliers[0]}`)
+                  .replace(/("WATER_MULTIPLIERS":\s*\{[^}]*"STANDARD_TUNNEL":\s*)[\d.]+/, `$1${config.water_multipliers[1]}`)
+                  .replace(/("WATER_MULTIPLIERS":\s*\{[^}]*"CUT_AND_COVER":\s*)[\d.]+/, `$1${config.water_multipliers[2]}`)
+                  .replace(/("WATER_MULTIPLIERS":\s*\{[^}]*"AT_GRADE":\s*)[\d.]+/, `$1${config.water_multipliers[3]}`)
+                  .replace(/("WATER_MULTIPLIERS":\s*\{[^}]*"ELEVATED":\s*)[\d.]+/, `$1${config.water_multipliers[4]}`);
+            }
+            
+            if (config.elevation_thresholds) {
+                if (key == "INDEX") {
+                    console.log(`Changing elevation thresholds to ${config.elevation_thresholds} m`);
+                }
+                fileContents[key] = fileContents[key]
+                  .replace(/("ELEVATION_THRESHOLDS":\s*\{[^}]*"DEEP_BORE":\s*)[^,]*/, `$1${config.elevation_thresholds[0]}`)
+                  .replace(/("ELEVATION_THRESHOLDS":\s*\{[^}]*"STANDARD_TUNNEL":\s*)[^,]*/, `$1${config.elevation_thresholds[1]}`)
+                  .replace(/("ELEVATION_THRESHOLDS":\s*\{[^}]*"CUT_AND_COVER":\s*)[^,]*/, `$1${config.elevation_thresholds[2]}`)
+                  .replace(/("ELEVATION_THRESHOLDS":\s*\{[^}]*"AT_GRADE":\s*)[^,]*/, `$1${config.elevation_thresholds[3]}`)
+                  .replace(/("ELEVATION_THRESHOLDS":\s*\{[^}]*"ELEVATED":\s*)[^}]*/, `$1${config.elevation_thresholds[4]}`);
+            }
+        });
+
     }
 
     return fileContents;
