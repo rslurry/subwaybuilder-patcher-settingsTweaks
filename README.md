@@ -24,7 +24,7 @@ While here in the packages directory, clone this repository into a folder named 
 git clone https://github.com/rslurry/subwaybuilder-patcher-settingsTweaks ./settingsTweaks
 ```
 
-You're now ready to set up the `settingsTweaks` configuration file.  See the next section for details.
+You're now ready to set up the `settingsTweaks` configuration file.  See the next section for details, or skip to the Usage section if you plan to use the Patcher's GUI to easily set up the config file and patch the game.
 
 ## Config
 Like the `subwaybuilder-patcher` and `mapPatcher`, `settingsTweaks` is controlled by a configuration file named `config.js`.  The configuration file will specify which settings you wish to change and what you wish to set them to.  Each setting can be independently controlled - so if you don't want to change the maximum slope percentage, then turn that off by setting it to `false`.  The `config_example.js` file should give you a good idea how to use it, and all changes are disabled by default so you can selectively enable your desired changes.  Here is an example `config.js` that changes all currently implemented settings:
@@ -77,7 +77,19 @@ export default config;
 ```
 
 ## Usage
-To use `settingsTweaks`, in your patcher `config.js` (located in the `subwaybuilder-patcher` folder, NOT `settingsTweaks`), ensure you have `"settingsTweaks"` included in the `"packagesToRun"`.  For example, if you wanted to use this in addition to the `mapPatcher`, your patcher `config.js` might look something like this:
+### The GUI method
+The recommended way to use this mod is via the Patcher's GUI.  This provides a simple way to select your desired changes, input new values for various settings, save the config, and patch the game.  
+1. After ensuring that `settingsTweaks` is located within `subwaybuilder-patcher/patcher/packages/`, launch the GUI using the correct script for your OS (Start_GUI.bat for Windows, and Start_GUI.sh for Linux and Mac).  This will open a page in your browser where you can edit configs for the Patcher.
+2. Check the box for "Settings Tweaks" in the top left of the GUI to enable it.
+3. Click on the "Config" button next to "Settings Tweaks".  A list of available settings will appear below that.
+4. For any setting you wish to change, check the box next to it.  This will expand that box so that the various settings associated with it are available to change.  It will initially populate with the values in your existing `config.js` file if it already exists, and if it doesn't exist then it populates with the Subway Builder default values.
+5. After setting everything you wish to change, click on "Save Settings" at the bottom left of the screen.
+6. After configuring all mods you wish to patch into the game, click on "START PATCHING" in the bottom right.  Above this button, you will begin seeing details about the patching process.  Wait patiently while it finishes.
+7. Once it finishes, look in the `subwaybuilder-patcher` directory and you will find the patched game.  Launch that and enjoy!
+
+### The manual method
+1. Set up the `settingsTweaks` `config.js` file.  See the "Config" section for details on this.
+2. In the patcher `config.js` (located in the `subwaybuilder-patcher` folder, NOT `settingsTweaks`), ensure you have `"settingsTweaks"` included in the `"packagesToRun"`.  The ordering of `settingsTweaks` in `"packagesToRun"` should not matter, as long as the other packages are not also changing the settings controlled here (keep in mind that other mods may have special ordering requirements here!).  For example, if you wanted to use this in addition to the `mapPatcher`, your patcher `config.js` might look something like this:
 ```js
 const config = {
   "subwaybuilderLocation": "C:\\Users\\[username]\\AppData\\Local\\Programs\\Subway\ Builder\\", // appimage location image on linux or install directory on windows (something like C:\\Users\\[username]\\AppData\\Local\\Programs\\Subway\ Builder)
@@ -88,7 +100,8 @@ const config = {
 export default config;
 ```
 
-The ordering of `settingsTweaks` in `"packagesToRun"` should not matter, as long as the other packages are not also changing the settings controlled here.
+3. Run the Patcher.  Wait while it finishes.
+4. Once it finishes, look in the `subwaybuilder-patcher` directory and you will find the patched game.  Launch that and enjoy!
 
-Enjoy.
-
+## Questions, issues, requests?
+If you run into any challenges setting up and using this mod, or if you have requests for additional settings to tweak, you can open an issue here on GitHub or contact @slurry on the Discord.
