@@ -37,9 +37,9 @@ const config = {
     "changeConstructionCosts" : false, // true or false.  Determines whether to change the construction cost multipliers
     "single_multiplier" : 0.75, // Price of a single station relative to a parallel station.  Game default is 0.75
     "quad_multiplier" : 1.5,    // Price of a quad   station relative to a parallel station.  Game default is 1.5
-    "elevation_multipliers" : [4.5, 2, 1, 0.3, 0.8], // Price multipliers based on elevation.  Ordering is [deep bore, standard tunnel, cut and cover, at game, elevated].  Game default is [4.5, 2, 1, 0.3, 0.8]
-    "water_multipliers" : [1.44444, 1.5, 3, 10, 2.5], // Price multipliers when building under/over water.  Ordering is [deep bore, standard tunnel, cut and cover, at game, elevated].  Game default is [1.44444, 1.5, 3, 10, 2.5]
-    "elevation_thresholds" : [-100, -24, -10, -3, 4.5], // The first depth/height where each elevation type occurs.  Ordering is [deep bore, standard tunnel, cut and cover, at game, elevated].  Game default is [-100, -24, -10, -3, 4.5] 
+    "elevation_multipliers" : [4.5, 2, 1, 0.3, 0.8], // Price multipliers based on elevation.  Ordering is [deep bore, standard tunnel, cut and cover, at grade, elevated].  Game default is [4.5, 2, 1, 0.3, 0.8]
+    "water_multipliers" : [1.44444, 1.5, 3, 10, 2.5], // Price multipliers when building under/over water.  Ordering is [deep bore, standard tunnel, cut and cover, at grade, elevated].  Game default is [1.44444, 1.5, 3, 10, 2.5]
+    "elevation_thresholds" : [-100, -24, -10, -3, 4.5], // The first depth/height where each elevation type occurs.  Ordering is [deep bore, standard tunnel, cut and cover, at grade, elevated].  Game default is [-100, -24, -10, -3, 4.5] 
   };
   
   export default config;
