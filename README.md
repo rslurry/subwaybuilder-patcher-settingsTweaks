@@ -27,7 +27,13 @@ git clone https://github.com/rslurry/subwaybuilder-patcher-settingsTweaks ./sett
 You're now ready to set up the `settingsTweaks` configuration file.  See the next section for details, or skip to the Usage section if you plan to use the Patcher's GUI to easily set up the config file and patch the game.
 
 ## Config
-Like the `subwaybuilder-patcher` and `mapPatcher`, `settingsTweaks` is controlled by a configuration file named `config.js`.  The configuration file will specify which settings you wish to change and what you wish to set them to.  Each setting can be independently controlled - so if you don't want to change the maximum slope percentage, then turn that off by setting it to `false`.  The `config_example.js` file should give you a good idea how to use it, and all changes are disabled by default so you can selectively enable your desired changes.  Here is an example `config.js` that changes all currently implemented settings:
+Like the `subwaybuilder-patcher` and `mapPatcher`, `settingsTweaks` is controlled by a configuration file named `config.js`.  The configuration file will specify which settings you wish to change and what you wish to set them to.  
+
+Each setting can be independently controlled - so if you don't want to change the maximum slope percentage, then turn that off by setting it to `false`.  The `config_example.js` file should give you a good idea how to use it, and all changes are disabled by default so you can selectively enable your desired changes.
+
+For some parameters, if you do not include them in the config file, then they remain unchanged.  This applies to the options under the `changeStartingMoney` and `changeConstructionCosts` settings, in case you don't want to change all settings under that section.
+
+Here is an example `config.js` that changes all currently implemented settings:
 ```js
 const config = {
     "changeGameSpeeds" : true, // true or false. Determines whether to change the simulation speeds
